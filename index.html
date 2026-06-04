@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行程總覽 2026.06.05–08</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A96E;--gold-pale:#F7F0E3;--ink:#1C1A17;--ink-soft:#8A8278;--cream:#FAF7F2;--cream-dark:#F0EBE1;--border:rgba(201,169,110,0.25)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream);font-family:'Noto Serif TC',serif;color:var(--ink);font-size:13px}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+.top-bar{background:var(--ink);padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.top-title{font-family:'Playfair Display',serif;color:var(--gold);font-size:17px;font-weight:400;letter-spacing:.04em}
+.top-sub{font-family:'DM Mono',monospace;color:var(--ink-soft);font-size:10px;letter-spacing:.08em}
+.nav{background:var(--ink);border-top:0.5px solid rgba(201,169,110,0.18);padding:0 20px;display:flex;position:sticky;top:0;z-index:20}
+.ntab{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--ink-soft);padding:9px 14px;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-0.5px;transition:color .18s,border-color .18s}
+.ntab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.ntab:hover{color:var(--gold)}
+.panel{display:none;padding:18px 20px 40px}.panel.on{display:block}
+.sec{margin-bottom:16px}
+.sec-hd{background:var(--ink);color:var(--gold);font-family:'Playfair Display',serif;font-size:13px;font-weight:400;letter-spacing:.09em;padding:9px 14px;border-radius:5px 5px 0 0;display:flex;align-items:center;justify-content:space-between}
+.sec-hd-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--ink-soft);letter-spacing:.07em}
+.sec-body{background:#fff;border:0.5px solid var(--border);border-top:none;border-radius:0 0 5px 5px;overflow:hidden}
+.row{border-bottom:0.5px solid var(--border)}.row:last-child{border-bottom:none}
+.row-hd{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;background:#fff;transition:background .13s}
+.row-hd:hover{background:var(--gold-pale)}
+.rtime{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-soft);min-width:46px;letter-spacing:.02em}
+.rdot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.rname{font-size:13px;color:var(--ink);flex:1;font-weight:500;line-height:1.4}
+.rchips{display:flex;gap:4px;flex-shrink:0}
+.chip{font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;border-radius:2px;border:0.5px solid transparent}
+.c-tr{background:#E6F1FB;color:#0C447C;border-color:rgba(12,68,124,.2)}
+.c-pk{background:#FAEEDA;color:#854F0B;border-color:rgba(133,79,11,.2)}
+.c-ok{background:#EAF3DE;color:#27500A;border-color:rgba(39,80,10,.25)}
+.rarr{font-size:10px;color:var(--ink-soft);transition:transform .18s;flex-shrink:0}
+.rarr.on{transform:rotate(180deg)}
+.detail{display:none;background:var(--cream);padding:10px 14px 12px 70px}.detail.on{display:block}
+.dg{display:grid;grid-template-columns:80px 1fr;border:0.5px solid var(--border);border-radius:3px;overflow:hidden}
+.dl{font-family:'DM Mono',monospace;font-size:9px;color:var(--ink-soft);background:var(--cream-dark);padding:6px 8px;border-right:0.5px solid var(--border);border-bottom:0.5px solid var(--border);letter-spacing:.03em;line-height:1.5}
+.dv{font-size:12px;color:var(--ink);padding:6px 8px;border-bottom:0.5px solid var(--border);line-height:1.55}
+.dl:nth-last-child(2),.dv:last-child{border-bottom:none}
+.rmk{border-left:2.5px solid #A32D2D;background:#FCEBEB;padding:8px 10px;margin-bottom:8px}
+.rmk p{font-size:11px;color:#791F1F;line-height:1.6}
+.nte{border-left:2.5px solid var(--gold);background:var(--gold-pale);padding:8px 10px;margin-bottom:8px}
+.nte p{font-size:11px;color:#633806;line-height:1.6}
+.end-bar{font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:.07em;padding:7px 14px;text-align:right;background:var(--cream-dark);border-top:0.5px solid var(--border)}
+.fee{background:var(--ink);border-radius:5px;padding:14px 16px;margin-top:14px}
+.fee-t{font-family:'Playfair Display',serif;color:var(--gold);font-size:12px;margin-bottom:8px;letter-spacing:.05em}
+.fee-r{font-size:12px;color:var(--ink-soft);line-height:1.9;display:flex;gap:7px}
+.fee-r::before{content:"·";color:var(--gold);flex-shrink:0}
+.hcard{padding:12px 14px;border-bottom:0.5px solid var(--border)}.hcard:last-child{border-bottom:none}
+.hcard-hd{display:flex;align-items:center;gap:10px;cursor:pointer;transition:opacity .13s}
+.hcard-hd:hover{opacity:.8}
+.hcard-name{font-size:13px;font-weight:500;flex:1}
+.hcard-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink-soft)}
+.hcard-body{display:none;margin-top:10px}.hcard-body.on{display:block}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-title">行程總覽 ／ 2026.06.05–08</div>
+  <div class="top-sub">2 GUESTS · EVA BUSINESS CLASS</div>
+</div>
+<div class="nav">
+  <button class="ntab on" onclick="sw('c',this)">旅客版本</button>
+  <button class="ntab" onclick="sw('d',this)">接送及筆記</button>
+</div>
+
+<!-- ══════════════ 旅客版本 ══════════════ -->
+<div id="c" class="panel on">
+
+  <div class="sec">
+    <div class="sec-hd"><span>01 · 班機</span><span class="sec-hd-sub">FLIGHTS</span></div>
+    <div class="sec-body">
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">6/5 五</span><span class="rdot"></span>
+          <span class="rname">BR192 松山 → 羽田</span>
+          <div class="rchips"><span class="chip c-tr">去程</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="dg">
+            <div class="dl">出發</div><div class="dv">台北松山（T1）07:20</div>
+            <div class="dl">抵達</div><div class="dv">東京羽田（T3）11:30</div>
+            <div class="dl">飛行時間</div><div class="dv">3 小時 10 分</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">6/8 一</span><span class="rdot"></span>
+          <span class="rname">BR183 成田 → 桃園</span>
+          <div class="rchips"><span class="chip c-tr">回程</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="dg">
+            <div class="dl">出發</div><div class="dv">東京成田（T1）13:25</div>
+            <div class="dl">抵達</div><div class="dv">台灣桃園（T2）16:05</div>
+            <div class="dl">飛行時間</div><div class="dv">3 小時 40 分</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hd"><span>02 · 住宿</span><span class="sec-hd-sub">ACCOMMODATION</span></div>
+    <div class="sec-body">
+      <div class="hcard">
+        <div class="hcard-hd" onclick="togH(this)">
+          <span class="rdot"></span>
+          <span class="hcard-name">東京寶格麗</span>
+          <span class="hcard-date">6/5 一晚</span>
+          <span class="chip c-ok" style="margin-left:6px">已含</span>
+          <span class="rarr" style="margin-left:8px">▼</span>
+        </div>
+        <div class="hcard-body">
+          <div class="dg">
+            <div class="dl">地址</div><div class="dv"><a href="https://maps.app.goo.gl/cHrrtMj7KqSKLwdx5" target="_blank">2-2-1 Yaesu, Chuo-ku, Tokyo 104-0028</a></div>
+            <div class="dl">電話</div><div class="dv"><a href="tel:+81362623333">+81 3-6262-3333</a></div>
+            <div class="dl">官網</div><div class="dv"><a href="https://www.bulgarihotels.com/en_US/tokyo" target="_blank">bulgarihotels.com/tokyo</a></div>
+            <div class="dl">禮遇</div><div class="dv">兩位早餐（已含）</div>
+          </div>
+        </div>
+      </div>
+      <div class="hcard">
+        <div class="hcard-hd" onclick="togH(this)">
+          <span class="rdot"></span>
+          <span class="hcard-name">成田日航飯店</span>
+          <span class="hcard-date">6/6–6/7 兩晚</span>
+          <span class="rarr" style="margin-left:8px">▼</span>
+        </div>
+        <div class="hcard-body">
+          <div class="dg">
+            <div class="dl">確認號</div><div class="dv" style="font-family:'DM Mono',monospace">DNT260606（Fisher 名義）</div>
+            <div class="dl">地址</div><div class="dv">500 Tokko, Narita-shi, Chiba 286-0106</div>
+            <div class="dl">電話</div><div class="dv"><a href="tel:+81476320032">+81 476-32-0032</a></div>
+            <div class="dl">官網</div><div class="dv"><a href="https://www.nikko-narita.com/english/" target="_blank">nikko-narita.com</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hd"><span>03 · 行程</span><span class="sec-hd-sub">ITINERARY</span></div>
+    <div class="sec-body">
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)" style="background:var(--cream-dark)">
+          <span class="rtime" style="color:var(--gold);font-weight:500">6/5 五</span><span class="rdot"></span>
+          <span class="rname">出發日</span><span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="rmk"><p>⚑ 請先至管理室換證，方能下至 B2 停車場接應<br>地址：37號</p></div>
+          <div class="dg">
+            <div class="dl">05:45</div><div class="dv">出發 37號 → 松山機場</div>
+            <div class="dl">07:20</div><div class="dv">BR192 起飛</div>
+            <div class="dl">11:30</div><div class="dv">羽田接機，包車 10 小時<br><span style="font-size:11px;color:var(--ink-soft)">自由逛街，目的地請當天與司機討論</span></div>
+            <div class="dl">17:00</div><div class="dv">晚餐 Aramaki <span class="chip c-ok" style="vertical-align:middle">已含</span><br><span style="font-size:11px;color:var(--ink-soft)"><a href="https://maps.app.goo.gl/BfiGXGcx6v2bsSCS7" target="_blank">〒106-0044 Minato, Higashiazabu 1-24-6 麻布ハイツ</a></span><br><span style="font-size:11px;color:var(--ink-soft)">訂位：<a href="https://guide.michelin.com/us/en/tokyo-region/tokyo/restaurant/aramaki" target="_blank">Michelin 頁面</a>（Stanley 代訂）｜JPY 13,700 × 2，不含酒水</span></div>
+            <div class="dl">當晚</div><div class="dv">入住東京寶格麗<br><span style="font-size:11px;color:var(--ink-soft)">兩顆枕頭已送達飯店，抵達後請至櫃台確認</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)" style="background:var(--cream-dark)">
+          <span class="rtime" style="color:var(--gold);font-weight:500">6/6 六</span><span class="rdot"></span>
+          <span class="rname">高爾夫日</span><span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="dg">
+            <div class="dl">12:00</div><div class="dv">寶格麗退房，接送至 Naritanomori Country Club<br><span style="font-size:11px;color:var(--ink-soft)"><a href="https://maps.app.goo.gl/JPuTysyNTvAU6nQ76" target="_blank">2628-4 Yamakura, Katori, Chiba</a>｜車程約 1小時20分</span></div>
+            <div class="dl">14:00</div><div class="dv">預計抵達，可先簡單用餐</div>
+            <div class="dl">14:49</div><div class="dv">開球</div>
+            <div class="dl">當晚</div><div class="dv">入住成田日航飯店</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)" style="background:var(--cream-dark)">
+          <span class="rtime" style="color:var(--gold);font-weight:500">6/8 一</span><span class="rdot"></span>
+          <span class="rname">返台日</span><span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="dg">
+            <div class="dl">13:25</div><div class="dv">BR183 成田（T1）起飛</div>
+            <div class="dl">16:05</div><div class="dv">桃園（T2）抵達，23 號會面點，大車接機</div>
+          </div>
+          <div class="nte" style="margin-top:8px"><p>如需飯店送機（成田日航 → 成田 T1）：Alphard，JPY 7,000<br>請 Fisher 聯繫飯店禮賓部確認</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hd"><span>04 · 用車</span><span class="sec-hd-sub">TRANSPORTATION</span></div>
+    <div class="sec-body">
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">6/5 去</span><span class="rdot"></span>
+          <span class="rname">台灣段 — 去程司機</span>
+          <div class="rchips"><span class="chip c-pk">台灣</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">司機</div><div class="dv">陳春德</div>
+            <div class="dl">車型</div><div class="dv">Lexus LM300h 7座</div>
+            <div class="dl">車號</div><div class="dv" style="font-family:'DM Mono',monospace">RFA-5988</div>
+            <div class="dl">聯絡</div><div class="dv"><a href="tel:0913813080" style="font-family:'DM Mono',monospace">0913-813-080</a></div>
+          </div>
+          <div class="nte" style="margin-top:8px"><p>司機資訊有可能臨時更動，將另行通知</p></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">6/5 日本</span><span class="rdot"></span>
+          <span class="rname">日本段 — 羽田包車</span>
+          <div class="rchips"><span class="chip c-tr">日本</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">路線</div><div class="dv">羽田接機後包車 10 小時，東京市區自由行</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">6/6 日本</span><span class="rdot"></span>
+          <span class="rname">日本段 — 球場接送</span>
+          <div class="rchips"><span class="chip c-tr">日本</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">路線</div><div class="dv">東京寶格麗（退房）→ Naritanomori Country Club</div>
+            <div class="dl">出發</div><div class="dv">12:00 退房後</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">6/8 回</span><span class="rdot"></span>
+          <span class="rname">台灣段 — 回程司機</span>
+          <div class="rchips"><span class="chip c-pk">台灣</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">會面</div><div class="dv">桃園機場第二航廈外 23 號會面點</div>
+            <div class="dl">司機</div><div class="dv">謝孟軒</div>
+            <div class="dl">車型</div><div class="dv">Alphard｜紳士黑</div>
+            <div class="dl">車號</div><div class="dv" style="font-family:'DM Mono',monospace">RFW-5988</div>
+            <div class="dl">聯絡</div><div class="dv"><a href="tel:0972906993" style="font-family:'DM Mono',monospace">0972-906-993</a></div>
+          </div>
+          <div class="nte" style="margin-top:8px"><p>司機資訊有可能臨時更動，將另行通知</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nte" style="margin-top:4px;border-radius:3px">
+    <p>兩顆枕頭已送達飯店，抵達後請至櫃台確認</p>
+  </div>
+</div>
+
+<!-- ══════════════ 接送及筆記 ══════════════ -->
+<div id="d" class="panel">
+
+  <div class="sec">
+    <div class="sec-hd"><span>01 · 班機</span><span class="sec-hd-sub">FLIGHTS</span></div>
+    <div class="sec-body">
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">6/5 五</span><span class="rdot"></span>
+          <span class="rname">BR192 松山 → 羽田</span>
+          <div class="rchips"><span class="chip c-tr">去程</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="dg">
+            <div class="dl">出發</div><div class="dv">台北松山（T1）07:20</div>
+            <div class="dl">抵達</div><div class="dv">東京羽田（T3）11:30</div>
+            <div class="dl">飛行時間</div><div class="dv">3 小時 10 分</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">6/8 一</span><span class="rdot"></span>
+          <span class="rname">BR183 成田 → 桃園</span>
+          <div class="rchips"><span class="chip c-tr">回程</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">出發</div><div class="dv">東京成田（T1）13:25</div>
+            <div class="dl">抵達</div><div class="dv">台灣桃園（T2）16:05</div>
+            <div class="dl">飛行時間</div><div class="dv">3 小時 40 分</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hd"><span>02 · 行程</span><span class="sec-hd-sub">ITINERARY</span></div>
+    <div class="sec-body">
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)" style="background:var(--cream-dark)">
+          <span class="rtime" style="color:var(--gold);font-weight:500">6/5 五</span><span class="rdot"></span>
+          <span class="rname">台灣出發</span><span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="rmk"><p>⚑ 司機請先至管理室換證，方能下至 B2 停車場接應</p></div>
+          <div class="dg">
+            <div class="dl">05:45</div><div class="dv">37號出發 → 松山機場（大車，2位，含球袋及行李）<br><span style="font-size:11px;color:var(--ink-soft)">車內備：熱美式 ×1 ／ 熱紅茶拿鐵無糖 ×1</span></div>
+            <div class="dl">07:20</div><div class="dv">BR192 起飛</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)" style="background:var(--cream-dark)">
+          <span class="rtime" style="color:var(--gold);font-weight:500">6/5 五</span><span class="rdot"></span>
+          <span class="rname">東京抵達</span><span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="dg">
+            <div class="dl">11:30</div><div class="dv">羽田（T3）接機，包車 10 小時起算<br><span style="font-size:11px;color:var(--ink-soft)">請當天與客人討論東京市區逛街或行程</span></div>
+            <div class="dl">17:00</div><div class="dv">晚餐 Aramaki<br><span style="font-size:11px;color:#791F1F;font-weight:500">⚑ 請勿讓客戶自行付款</span><br><span style="font-size:11px;color:var(--ink-soft)"><a href="https://maps.app.goo.gl/BfiGXGcx6v2bsSCS7" target="_blank">〒106-0044 Minato, Higashiazabu 1-24-6 麻布ハイツ</a></span><br><span style="font-size:11px;color:var(--ink-soft)">⚑ 客人用餐期間，司機 Kiku Kahou 前往東京半島前台領取 Stanley 包裹<br>司機電話：<a href="tel:09083437462" style="font-family:'DM Mono',monospace">0908-343-7462</a>（已提供飯店）</span></div>
+            <div class="dl">包車結束</div><div class="dv">送抵東京寶格麗<br><span style="font-size:11px;color:var(--ink-soft)">如有超時請通知台灣廠商，勿向客戶請款</span></div>
+            <div class="dl">抵達後</div><div class="dv">兩顆枕頭已送達飯店，請提醒客戶至櫃台確認</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)" style="background:var(--cream-dark)">
+          <span class="rtime" style="color:var(--gold);font-weight:500">6/6 六</span><span class="rdot"></span>
+          <span class="rname">高爾夫日</span><span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="dg">
+            <div class="dl">12:00 退房</div><div class="dv">東京寶格麗出發 → Naritanomori Country Club<br><span style="font-size:11px;color:var(--ink-soft)"><a href="https://maps.app.goo.gl/JPuTysyNTvAU6nQ76" target="_blank">2628-4 Yamakura, Katori, Chiba 289-0426</a>｜車程約 1小時20分</span></div>
+            <div class="dl">預計 14:00</div><div class="dv">抵達球場｜可先安排簡單午餐｜14:49 開球</div>
+          </div>
+          <div class="end-bar" style="margin-top:8px">✓ 送抵球場後行程結束 — 後續由其他公司接手</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)" style="background:var(--cream-dark)">
+          <span class="rtime" style="color:var(--gold);font-weight:500">6/8 一</span><span class="rdot"></span>
+          <span class="rname">台灣返抵</span><span class="rarr">▼</span>
+        </div>
+        <div class="detail on">
+          <div class="dg">
+            <div class="dl">16:05 抵</div><div class="dv">桃園機場（T2）— 23 號會面點等候<br>大車，2位，含球袋及行李 → 37號</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hd"><span>03 · 用車</span><span class="sec-hd-sub">TRANSPORTATION</span></div>
+    <div class="sec-body">
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">台灣 去</span><span class="rdot"></span>
+          <span class="rname">6/5 松山機場接送（去程）</span>
+          <div class="rchips"><span class="chip c-pk">台灣段</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">時間</div><div class="dv">05:45</div>
+            <div class="dl">路線</div><div class="dv">37號 → 台北松山機場（B2 停車場）</div>
+            <div class="dl">司機</div><div class="dv">陳春德</div>
+            <div class="dl">車型</div><div class="dv">Lexus LM300h 7座</div>
+            <div class="dl">車號</div><div class="dv" style="font-family:'DM Mono',monospace">RFA-5988</div>
+            <div class="dl">聯絡</div><div class="dv"><a href="tel:0913813080" style="font-family:'DM Mono',monospace">0913-813-080</a></div>
+          </div>
+          <div class="nte" style="margin-top:8px"><p>司機資訊有可能臨時更動，將另行通知</p></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">日本 去</span><span class="rdot"></span>
+          <span class="rname">6/5 羽田接機 ＋ 包車 10 小時</span>
+          <div class="rchips"><span class="chip c-tr">日本段</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">接機</div><div class="dv">羽田機場（T3）11:30 後</div>
+            <div class="dl">包車</div><div class="dv">10 小時，自由行程，當天與客人討論</div>
+            <div class="dl">結束點</div><div class="dv">東京寶格麗</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">日本 6/6</span><span class="rdot"></span>
+          <span class="rname">寶格麗 → Naritanomori CC</span>
+          <div class="rchips"><span class="chip c-tr">日本段</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">出發</div><div class="dv">12:00 退房後</div>
+            <div class="dl">目的地</div><div class="dv"><a href="https://maps.app.goo.gl/JPuTysyNTvAU6nQ76" target="_blank">2628-4 Yamakura, Katori, Chiba 289-0426</a></div>
+            <div class="dl">車程</div><div class="dv">約 1 小時 20 分｜預計 14:00 抵達</div>
+            <div class="dl">備注</div><div class="dv">行程至此結束</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-hd" onclick="tog(this)">
+          <span class="rtime">台灣 回</span><span class="rdot"></span>
+          <span class="rname">6/8 桃園機場接機（回程）</span>
+          <div class="rchips"><span class="chip c-pk">台灣段</span></div>
+          <span class="rarr">▼</span>
+        </div>
+        <div class="detail">
+          <div class="dg">
+            <div class="dl">航班</div><div class="dv">BR183｜成田 13:25 → 桃園（T2）16:05</div>
+            <div class="dl">會面點</div><div class="dv">第二航廈外 23 號</div>
+            <div class="dl">目的地</div><div class="dv">37號</div>
+            <div class="dl">司機</div><div class="dv">謝孟軒</div>
+            <div class="dl">車型</div><div class="dv">Alphard｜紳士黑</div>
+            <div class="dl">車號</div><div class="dv" style="font-family:'DM Mono',monospace">RFW-5988</div>
+            <div class="dl">聯絡</div><div class="dv"><a href="tel:0972906993" style="font-family:'DM Mono',monospace">0972-906-993</a></div>
+          </div>
+          <div class="nte" style="margin-top:8px"><p>司機資訊有可能臨時更動，將另行通知</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fee">
+    <div class="fee-t">費用處理原則</div>
+    <div class="fee-r">超時、額外費用請勿向客戶收取，多退少補</div>
+    <div class="fee-r">6/5 晚餐請勿讓客戶自行付款</div>
+    <div class="fee-r">如有超出，請通知 Elle 並拍照上傳收據</div>
+  </div>
+</div>
+
+<script>
+function sw(id,btn){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.ntab').forEach(function(t){t.classList.remove('on')});
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+function tog(hd){
+  var d=hd.nextElementSibling;
+  var i=hd.querySelector('.rarr');
+  var o=d.classList.contains('on');
+  d.classList.toggle('on',!o);
+  if(i)i.classList.toggle('on',!o);
+}
+function togH(hd){
+  var b=hd.nextElementSibling;
+  var i=hd.querySelector('.rarr');
+  var o=b.classList.contains('on');
+  b.classList.toggle('on',!o);
+  if(i)i.classList.toggle('on',!o);
+}
+</script>
+</body>
+</html>
